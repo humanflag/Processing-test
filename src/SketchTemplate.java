@@ -1,4 +1,8 @@
 import processing.core.PApplet;
+import processing.core.PFont;
+import processing.core.PVector;
+
+import java.util.LinkedList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,11 +36,105 @@ public class SketchTemplate extends PApplet {
     // the normal Processing setup function.
     // Needs to state the "public" keyword since we're doing this outside the Processing IDE
         // - the Processing IDE does this automatically behind the scenes ...
-    public void setup() {
 
+    class Man {
+        private String name = "joneinar";
+    }
+
+    int iwidht = 800;
+    int iheight = 600;
+    int sab;
+    int x,y;
+    PVector v1;
+    // int poostarty;
+    // int poostartx;
+    int shosex;
+    LinkedList<PVector> poos = new LinkedList<PVector>();
+
+    Man dude;
+
+    PFont comicSansFont, ladyFootwearFont;
+
+    public void setup() {
+        size(iwidht, iheight);
+        smooth();
+        frameRate (25);
+        x=y=10;
+
+        ladyFootwearFont = loadFont("LadyFootwearLT-72.vlw");
+        comicSansFont = loadFont("ComicSansMS-48.vlw");
+    }
+
+    public String getThePoo()
+    {
+        return "poo on my shoe";
+    }
+
+    private void setupAndDrawBackground() {
+        // window and draw initialization stuff
+        // background(0);
+        fill(128, 128, 128, 120);
+        rect(0, 0, iwidht, iheight);
     }
 
     public void draw() {
 
+        if (mousePressed) {
+            PVector poovec = new PVector(x ,y);
+            poos.add(poovec);
+        }
+
+        fill(150,40,128);
+
+        for (PVector individualPoo : poos)
+        {
+            individualPoo.y += 10;
+            ellipse(individualPoo.x , individualPoo.y ,5,5);
+        }
+
+        v1 = new PVector(mouseX - x, mouseY -y);
+
+        setupAndDrawBackground();
+
+        int col = (int) random(124);
+        fill(col, col / 3, 0);
+
+        v1.div(6);
+
+        v1.limit(10);
+
+        x += v1.x;
+        y += v1.y;
+
+        rect(x, y, 10, 10);
+        // println("x: " + x + ", y: " + y);
+        // println("mouseX: " + mouseX + ", mouseY: " + mouseY);
+
+        boolean shouldShakeThePoo = false;
+        if (x == mouseX) shouldShakeThePoo = true; // shouldShakeThePoo = true;
+
+        textFont(ladyFootwearFont);
+        String shoe ="e";
+        {
+            float fumanshoe = height + sin(millis() / 1000.0f) * width / 3;
+            text(shoe, shosex,  fumanshoe);
+            if (fumanshoe > height ) {
+                shosex = (int) random(width);
+
+            }
+
+        }
+
+
+
+        textFont(comicSansFont);
+        String fail = getThePoo();
+        if (shouldShakeThePoo == true)
+        {
+            text(fail, 0, 30 + round(random(-3, 3)));
+        } else {
+            text(fail, 0, 30);
+        }
     }
+
 }
